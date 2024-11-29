@@ -1,0 +1,6 @@
+@CanonFT_API_HostAddress = http://localhost:5057
+
+GET {{CanonFT_API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
