@@ -29,5 +29,12 @@ namespace CanonFT_API.Controllers
             })
             .ToArray();
         }
+
+        [HttpPut(Name = "UpdateWeatherForecast")]
+        public void Put()
+        {
+            // we doen niets.
+        }
+
     }
 }
