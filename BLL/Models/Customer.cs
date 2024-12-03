@@ -1,4 +1,4 @@
-﻿namespace CanonFT_API.Models
+﻿namespace FTAPI.Models
 {
     public class Customer
     {

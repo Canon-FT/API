@@ -1,4 +1,4 @@
-﻿using CanonFT_API.Models;
+﻿using FTAPI.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CanonFT_API.Controllers
