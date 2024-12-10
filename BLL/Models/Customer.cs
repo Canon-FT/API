@@ -2,9 +2,13 @@
 {
     public class Customer
     {
-        public String Name { get; private set; }
+        public string Name { get; private set; }
 
-        public int Id { get; private set; }
+        public string GUID { get; private set; }
+
+        public string uFversion { get; private set; }
+
+        public List<Server> Servers { get; private set; }
 
         public Customer(String name) {
             Name = name;
