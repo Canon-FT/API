@@ -28,6 +28,7 @@ jobs:
   deploy:
     needs: test
     runs-on: [self-hosted, Windows, X64, tst]
+    steps:
     - name: Stop website
       shell: pwsh
       run: |
