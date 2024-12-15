@@ -30,7 +30,7 @@ jobs:
     runs-on: [self-hosted, Windows, X64, tst]
     steps:
     - name: Stop website
-      shell: pwsh
+      shell: powershell
       run: |
         if ((Get-WebSiteState -Name FT-API).Value -eq "Started")
         {
@@ -46,7 +46,7 @@ jobs:
     - name: Publish Release
       run: dotnet publish API --configuration Release -o C:\inetpub\wwwroot\ft-api
     - name: Start Website
-      shell: pwsh
+      shell: powershell
       run: |
         if ((Get-WebSiteState -Name FT-API).Value -eq "Stopped")
         {
