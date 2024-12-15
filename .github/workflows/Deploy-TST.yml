@@ -4,25 +4,56 @@ on:
   push:
     branches: tst
 
+defaults:
+  run:
+    shell: cmd
+
 jobs:
   build:
     runs-on: [self-hosted, Windows, X64, tst]
-    
-    defaults:
-      run:
-        shell: cmd
-
     steps:
     - uses: actions/checkout@v3
     - name: Restore dependencies
       run: dotnet restore
     - name: Build
       run: dotnet build --no-restore
+    
+  test:
+    needs: build
+    runs-on: [self-hosted, Windows, X64, tst]
+    steps:
     - name: Test
       run: dotnet test --no-build --verbosity normal
-    - name: Stop FT-API
-      run: appcmd stop sites "FT-API"
+   
+  deploy:
+    needs: test
+    runs-on: [self-hosted, Windows, X64, tst]
+    - name: Stop website
+      shell: pwsh
+      run: |
+        if ((Get-WebSiteState -Name FT-API).Value -eq "Started")
+        {
+          Stop-WebSite -Name FT-API
+          echo "Stopped Website FT-API"
+        }
+        if ((Get-WebAppPoolState -Name FT-API).Value -eq "Started")
+        {
+          Stop-WebAppPool -Name FT-API
+          echo "Stopped Application Pool FT-API"
+        }
+        Start-Sleep -s 15
     - name: Publish Release
       run: dotnet publish API --configuration Release -o C:\inetpub\wwwroot\ft-api
-    - name: Start FT-API
-      run: appcmd start sites "FT-API"
+    - name: Start Website
+      shell: pwsh
+      run: |
+        if ((Get-WebSiteState -Name FT-API).Value -eq "Stopped")
+        {
+          Start-WebSite -Name FT-API
+          echo "Started Website FT-API"
+        }
+        if ((Get-WebAppPoolState -Name FT-API).Value -eq "Stopped")
+        {
+          Start-WebAppPool -Name FT-API
+          echo "Started Application Pool FT"
+        }
