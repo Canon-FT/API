@@ -1,0 +1,28 @@
+name: Deploy to test environment on push
+
+on:
+  push:
+    branches: tst
+
+jobs:
+  build:
+    runs-on: [self-hosted, Windows, X64, tst]
+    
+    defaults:
+      run:
+        shell: cmd
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Restore dependencies
+      run: dotnet restore
+    - name: Build
+      run: dotnet build --no-restore
+    - name: Test
+      run: dotnet test --no-build --verbosity normal
+    - name: Stop FT-API
+      run: appcmd stop sites "FT-API"
+    - name: Publish Release
+      run: dotnet publish API --configuration Release -o C:\inetpub\wwwroot\ft-api
+    - name: Start FT-API
+      run: appcmd start sites "FT-API"
