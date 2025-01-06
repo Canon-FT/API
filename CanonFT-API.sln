@@ -10,7 +10,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "API", "API\API.csproj", "{4
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BLL", "BLL\BLL.csproj", "{D1194434-30CF-4EA5-AD86-30CA524466E6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DAL", "DAL\DAL.csproj", "{6F515618-51A8-42C0-A7B4-5FD8649140CD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DAL", "DAL\DAL.csproj", "{6F515618-51A8-42C0-A7B4-5FD8649140CD}"
+	ProjectSection(ProjectDependencies) = postProject
+		{D1194434-30CF-4EA5-AD86-30CA524466E6} = {D1194434-30CF-4EA5-AD86-30CA524466E6}
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Test", "Test\Test.csproj", "{E942E506-D2A0-45D8-BA54-485E464B414C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -30,6 +35,10 @@ Global
 		{6F515618-51A8-42C0-A7B4-5FD8649140CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6F515618-51A8-42C0-A7B4-5FD8649140CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6F515618-51A8-42C0-A7B4-5FD8649140CD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E942E506-D2A0-45D8-BA54-485E464B414C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E942E506-D2A0-45D8-BA54-485E464B414C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E942E506-D2A0-45D8-BA54-485E464B414C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E942E506-D2A0-45D8-BA54-485E464B414C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
