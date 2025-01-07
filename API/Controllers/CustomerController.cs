@@ -1,4 +1,4 @@
-﻿using FTAPI.Models;
+﻿using BLL.Customers;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CanonFT_API.Controllers
@@ -6,67 +6,93 @@ namespace CanonFT_API.Controllers
     [ApiController]
     [Route("[controller]")]
 
-    public class CustomerController : ControllerBase
+    public class CustomerController(ICustomerRepository customerRepository) : ControllerBase
     {
+        private ICustomerRepository _CustomerRepository = customerRepository;
 
         [HttpGet(Name = "RetrieveCustomers")]
-        public IEnumerable<Customer> RetrieveCustomers()
+        public IActionResult RetrieveCustomers()
         {
-            return new List<Customer>();
+            return Ok(_CustomerRepository.Customers);
         }
 
         [HttpPost(Name = "CreateCustomer")]
         public string CreateCustomer(Customer customer)
         {
-            return "GUID";
+            return _CustomerRepository.Create(customer);
         }
 
-        [HttpGet("{cid:int}", Name = "RetrieveCustomer")]
-        public Customer RetrieveCustomer(int cid)
+        [HttpGet("{cid}", Name = "RetrieveCustomer")]
+        public IActionResult RetrieveCustomer([FromRoute] string cid)
         {
-            return new Customer("Test");
+            Customer? customer = _CustomerRepository.Retrieve(cid);
+            if(customer == null) return NotFound();
+            return Ok(customer);
         }
 
-        [HttpPut("{cid:int}", Name = "UpdateCustomer")]
-        public void UpdateCustomer(Customer customer)
+        [HttpPut("{cid}", Name = "UpdateCustomer")]
+        public IActionResult UpdateCustomer([FromRoute] string cid, Customer customer)
         {
-            return;
+            if(customer.GUID != cid) return BadRequest();
+            return Ok(_CustomerRepository.Update(customer));
         }
 
-        [HttpDelete("{cid:int}", Name = "DeleteCustomer")]
-        public void DeleteCustomer(int cid)
+        [HttpDelete("{cid}", Name = "DeleteCustomer")]
+        public IActionResult DeleteCustomer([FromRoute] string cid)
         {
-            return;
+            Customer? customer = _CustomerRepository.Retrieve(cid);
+            if (customer == null) return NotFound();
+            return Ok(_CustomerRepository.Delete(customer));
         }
 
-        [HttpGet("{cid:int}/Server", Name = "RetrieveServers")]
-        public IEnumerable<Server> RetrieveCustomerServers(int cid)
+        [HttpGet("{cid}/Server", Name = "RetrieveServers")]
+        public IActionResult RetrieveCustomerServers([FromRoute] string cid)
         {
-            return new List<Server>();
+            Customer? customer = _CustomerRepository.Retrieve(cid);
+            if (customer == null) return NotFound();
+            return Ok(customer.Servers);
         }
 
-        [HttpPost("{cid:int}/Server", Name = "CreateServer")]
-        public string CreateServer(int cid, Server server)
+        [HttpPost("{cid}/Server", Name = "CreateServer")]
+        public IActionResult CreateServer([FromRoute] string cid, Server server)
         {
-            return "GUID";
+            Customer? customer = _CustomerRepository.Retrieve(cid);
+            if (customer == null) return NotFound();
+            customer.Servers.Add(server);
+            return Ok();
         }
 
-        [HttpGet("{cid:int}/Server/{sid}", Name = "RetrieveServer")]
-        public Server RetrieveCustomerServer(int cid, int sid)
+        [HttpGet("{cid}/Server/{sid}", Name = "RetrieveServer")]
+        public IActionResult RetrieveCustomerServer([FromRoute] string cid, [FromRoute] string sid)
         {
-            return new Server();
+            Customer? customer = _CustomerRepository.Retrieve(cid);
+            if (customer == null) return NotFound();
+            Server? server = _CustomerRepository.RetrieveServer(sid);
+            if (server == null) return NotFound();
+            return Ok(server);
         }
 
-        [HttpPut("{cid:int}/Server/{sid}", Name = "UpdateServer")]
-        public void UpdateServer(int cid, Server server)
+        [HttpPut("{cid}/Server/{sid}", Name = "UpdateServer")]
+        public IActionResult UpdateServer([FromRoute] string cid, [FromRoute] string sid, Server server)
         {
-            return;
+            Customer? customer = _CustomerRepository.Retrieve(cid);
+            if (customer == null) return NotFound();
+            Server? existingServer = _CustomerRepository.RetrieveServer(sid);
+            if (existingServer == null) return NotFound();
+            customer.Servers.Remove(existingServer);
+            customer.Servers.Add(server);
+            return Ok(_CustomerRepository.Update(customer));
         }
 
-        [HttpDelete("{cid:int}/Server/{sid}", Name = "DeleteServer")]
-        public void UpdateServer(int cid, int sid)
+        [HttpDelete("{cid}/Server/{sid}", Name = "DeleteServer")]
+        public IActionResult DeleteServer([FromRoute] string cid, [FromRoute] string sid)
         {
-            return;
+            Customer? customer = _CustomerRepository.Retrieve(cid);
+            if (customer == null) return NotFound();
+            Server? server = _CustomerRepository.RetrieveServer(sid);
+            if (server == null) return NotFound();
+            customer.Servers.Remove(server);
+            return Ok(_CustomerRepository.Update(customer));
         }
     }
 }
