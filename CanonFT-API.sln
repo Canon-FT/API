@@ -15,7 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DAL", "DAL\DAL.csproj", "{6
 		{D1194434-30CF-4EA5-AD86-30CA524466E6} = {D1194434-30CF-4EA5-AD86-30CA524466E6}
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Test", "Test\Test.csproj", "{E942E506-D2A0-45D8-BA54-485E464B414C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnitTests", "Test\UnitTests.csproj", "{E942E506-D2A0-45D8-BA54-485E464B414C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
