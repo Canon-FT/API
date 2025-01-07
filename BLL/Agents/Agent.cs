@@ -17,14 +17,14 @@ namespace BLL.Agents
         public DateTime? InstallationDate
         {
             get { return _InstallationDate; }
-            set { _InstallationDate = (value < DateTime.Now) ? value : DateTime.Now; }
+            set { _InstallationDate = (value < DateTime.Now) ? value : null; }
         }
 
         private DateTime? _HeartBeat;
         public DateTime? HeartBeat
         {
             get { return _HeartBeat; }
-            set { if (_HeartBeat == null || value > _HeartBeat) { _HeartBeat = value; } }
+            set { if (_HeartBeat == null || value > _HeartBeat) _HeartBeat = value; }
         }
 
         public AgentStatus Status 

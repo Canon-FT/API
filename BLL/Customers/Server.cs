@@ -27,7 +27,7 @@
         public DateTime? HeartBeat
         {
             get { return _HeartBeat; }
-            set { if (value > _HeartBeat) { _HeartBeat = value; } }
+            set { if (_HeartBeat == null || value > _HeartBeat) _HeartBeat = value; }
         }
     }
 }
