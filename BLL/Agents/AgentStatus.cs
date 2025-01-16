@@ -1,10 +1,11 @@
-﻿namespace FTAPI.Models
+﻿namespace BLL.Agents
 {
     public enum AgentStatus
     {
         Offline,
         Online,
         Error,
-        Warning
+        Warning,
+        Unknown
     }
 }
