@@ -32,6 +32,7 @@ jobs:
     - name: Stop website
       shell: pwsh
       run: |
+        Import-Module WebAdministration
         if ((Get-WebSiteState -Name FT-API).Value -eq "Started")
         {
           Stop-WebSite -Name FT-API
@@ -43,11 +44,13 @@ jobs:
           echo "Stopped Application Pool FT-API"
         }
         Start-Sleep -s 15
+        Remove-Module WebAdministration
     - name: Publish Release
       run: dotnet publish API --configuration Release -o C:\inetpub\wwwroot\ft-api
     - name: Start Website
       shell: pwsh
       run: |
+        Import-Module WebAdministration
         if ((Get-WebSiteState -Name FT-API).Value -eq "Stopped")
         {
           Start-WebSite -Name FT-API
@@ -58,3 +61,4 @@ jobs:
           Start-WebAppPool -Name FT-API
           echo "Started Application Pool FT"
         }
+        Remove-Module WebAdministration
