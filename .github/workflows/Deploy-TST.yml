@@ -31,46 +31,9 @@ jobs:
     steps:
     - name: Stop website
       shell: pwsh
-      run: |
-        Import-Module WebAdministration
-        echo "Stopping website"
-        if ((Get-WebSiteState -Name FT-API).Value -eq "Started")
-        {
-          Stop-WebSite -Name FT-API
-          echo "Stopped Website FT-API"
-        } else {
-          echo "Website FT-API already stopped"
-        }
-        if ((Get-WebAppPoolState -Name FT-API).Value -eq "Started")
-        {
-          Stop-WebAppPool -Name FT-API
-          echo "Stopped Application Pool FT-API"
-        } else {
-          echo "Application pool FT-API already stopped"
-        }
-        Start-Sleep -s 15
-        echo "Website stopped."
-        Remove-Module WebAdministration
+      run: ./.github/workflows/stop_website.ps1
     - name: Publish Release
       run: dotnet publish API --configuration Release -o C:\inetpub\wwwroot\ft-api
     - name: Start Website
       shell: pwsh
-      run: |
-        Import-Module WebAdministration
-        echo "Starting website"
-        if ((Get-WebSiteState -Name FT-API).Value -eq "Stopped")
-        {
-          Start-WebSite -Name FT-API
-          echo "Started Website FT-API"
-        } else {
-          echo "Website FT-API already started"
-        }
-        if ((Get-WebAppPoolState -Name FT-API).Value -eq "Stopped")
-        {
-          Start-WebAppPool -Name FT-API
-          echo "Started Application Pool FT"
-        } else {
-          echo "Application pool FT-API already started"
-        }
-        echo "Website started."
-        Remove-Module WebAdministration
+      run: ./.github/workflows/start_website.ps1
