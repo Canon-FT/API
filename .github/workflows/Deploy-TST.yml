@@ -31,30 +31,9 @@ jobs:
     steps:
     - name: Stop website
       shell: powershell
-      run: |
-        if ((Get-WebSiteState -Name FT-API).Value -eq "Started")
-        {
-          Stop-WebSite -Name FT-API
-          echo "Stopped Website FT-API"
-        }
-        if ((Get-WebAppPoolState -Name FT-API).Value -eq "Started")
-        {
-          Stop-WebAppPool -Name FT-API
-          echo "Stopped Application Pool FT-API"
-        }
-        Start-Sleep -s 15
+      run: ./stop_website.ps1
     - name: Publish Release
       run: dotnet publish API --configuration Release -o C:\inetpub\wwwroot\ft-api
     - name: Start Website
       shell: powershell
-      run: |
-        if ((Get-WebSiteState -Name FT-API).Value -eq "Stopped")
-        {
-          Start-WebSite -Name FT-API
-          echo "Started Website FT-API"
-        }
-        if ((Get-WebAppPoolState -Name FT-API).Value -eq "Stopped")
-        {
-          Start-WebAppPool -Name FT-API
-          echo "Started Application Pool FT"
-        }
+      run: ./start_website.ps1
