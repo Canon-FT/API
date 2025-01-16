@@ -1,7 +1,6 @@
 ﻿using BLL.Agents;
 using BLL.Customers;
 
-
 namespace UnitTests
 {
     internal class AgentTest
