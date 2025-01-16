@@ -1,0 +1,24 @@
+name: 'Check branches on merge'
+
+on:
+  pull_request:
+
+jobs:
+  check_branch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Merge to tst
+        if: github.base_ref == 'tst' && github.head_ref != 'dev'
+        run: |
+          echo "ERROR: You can only merge to tst from dev."
+          exit 1
+      - name: Merge to acc
+        if: github.base_ref == 'acc' && github.head_ref != 'tst'
+        run: |
+          echo "ERROR: You can only merge to acc from tst."
+          exit 1
+      - name: Merge to prd
+        if: github.base_ref == 'prd' && github.head_ref != 'acc'
+        run: |
+          echo "ERROR: You can only merge to prd from acc."
+          exit 1

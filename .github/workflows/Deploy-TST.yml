@@ -1,0 +1,39 @@
+name: Deploy to test environment on push
+
+on:
+  push:
+    branches: tst
+
+defaults:
+  run:
+    shell: cmd
+
+jobs:
+  build:
+    runs-on: [self-hosted, Windows, X64, tst]
+    steps:
+    - uses: actions/checkout@v3
+    - name: Restore dependencies
+      run: dotnet restore
+    - name: Build
+      run: dotnet build --no-restore
+    
+  test:
+    needs: build
+    runs-on: [self-hosted, Windows, X64, tst]
+    steps:
+    - name: Test
+      run: dotnet test --no-build --verbosity normal
+   
+  deploy:
+    needs: test
+    runs-on: [self-hosted, Windows, X64, tst]
+    steps:
+    - name: Stop website
+      shell: pwsh
+      run: ./.github/workflows/stop_website.ps1
+    - name: Publish Release
+      run: dotnet publish API --configuration Release -o C:\inetpub\wwwroot\ft-api
+    - name: Start Website
+      shell: pwsh
+      run: ./.github/workflows/start_website.ps1
